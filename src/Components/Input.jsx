@@ -16,7 +16,10 @@ const Input = () => {
     setInput("");
 
     try {
-      if(!isAPIAvailable) console.log('error ooo');
+      if (!isAPIAvailable()) {
+        console.log("error ooo");
+        return;
+      }
       const detectedLanguage = await window.ai.languageDetector.detect(input);
       const language = detectedLanguage?.language || "Unknown language";
 
