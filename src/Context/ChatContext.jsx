@@ -4,9 +4,22 @@ import PropTypes from "prop-types";
 const ChatContext = createContext();
 export const ChatProvider = ({ children }) => {
   const [input, setInput] = useState("");
-  const [messages, setMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [detectedLanguage, setDetectedLanguage] = useState('en');
+  const [targetLanguage, setTargetLanguage] = useState('en');
+
+
+  const translate = async (text) => {
+    try {
+      const baseText = await window.ai.translator.translate(text, detectedLanguage);
+      setMessages((prev) => [...prev, { text: baseText, type: "bot" }]);
+    } catch (error) {
+      console.log("there was an error translating this text", error);
+    }
+  };
+
   return (
-    <ChatContext.Provider value={{ input, setInput, messages, setMessage }}>
+    <ChatContext.Provider value={{ input, setInput, messages, setMessages, translate, detectedLanguage, setDetectedLanguage,targetLanguage, setTargetLanguage }}>
       {children}
     </ChatContext.Provider>
   );

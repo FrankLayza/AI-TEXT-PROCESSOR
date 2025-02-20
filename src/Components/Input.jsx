@@ -2,16 +2,31 @@ import { LuSend } from "react-icons/lu";
 import { useChatContext } from "../Context/ChatContext";
 const Input = () => {
   const { setInput } = useChatContext();
-  const {input} = useChatContext()
-  const { setMessage } = useChatContext();
-  const sendMessage = () => {
-    if (input == "") {
-      console.log("error");
-    } else {
-      setMessage((prev) => [...prev, input]);
-      setInput("");
+  const { input } = useChatContext();
+  const { setMessages } = useChatContext();
+
+  const isAPIAvailable = () => {
+    return window.ai && window.ai.languageDetector;
+  };
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    const userInput = { text: input, type: "user" };
+    setMessages((prev) => [...prev, userInput]);
+    setInput("");
+
+    try {
+      if(!isAPIAvailable) console.log('error ooo');
+      const detectedLanguage = await window.ai.languageDetector.detect(input);
+      const language = detectedLanguage?.language || "Unknown language";
+
+      const response = { text: input, language, type: "bot" };
+      setMessages((prev) => [...prev, response]);
+    } catch (error) {
+      console.log("there was an error fetching the language", error);
     }
   };
+
   return (
     <div className="flex relative items-center">
       <textarea
