@@ -4,10 +4,7 @@ const Input = () => {
   const { setInput } = useChatContext();
   const { input } = useChatContext();
   const { setMessages } = useChatContext();
-
-  const isAPIAvailable = () => {
-    return window.ai && window.ai.languageDetector;
-  };
+  const { setDetectedLanguage } = useChatContext();
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -16,17 +13,44 @@ const Input = () => {
     setInput("");
 
     try {
-      if (!isAPIAvailable()) {
-        console.log("error ooo");
+      if (!self.ai || !self.ai.languageDetector) {
+        console.error("Language detector API is not available.");
         return;
       }
-      const detectedLanguage = await window.ai.languageDetector.detect(input);
-      const language = detectedLanguage?.language || "Unknown language";
 
-      const response = { text: input, language, type: "bot" };
-      setMessages((prev) => [...prev, response]);
+      const languageDetectorCapabilities =
+        await self.ai.languageDetector.capabilities();
+      console.log(languageDetectorCapabilities.languageAvailable("es"));
+      const canDetect = languageDetectorCapabilities.available;
+      let detector;
+
+      if (canDetect === "no") {
+        console.log("The browser language detector is unstable");
+        return;
+      }
+      if (canDetect === "readily") {
+        console.log("The language detector is ready to be used");
+        detector = await self.ai.languageDetector.create();
+      } else {
+        detector = await self.ai.languageDetector.create({
+          monitor(m) {
+            m.addEventListener("downloadprogress", (e) => {
+              console.log(`Download ${e.loaded} of ${e.total} bytes.`);
+            });
+          },
+        });
+        await detector.ready;
+      }
+     
+      const detectLanguage = await detector.detect(input);
+      for (const tex of detectLanguage) {
+        if (tex.confidence >= 0.9) {
+          console.log(tex.detectedLanguage);
+        }
+      }
+      setDetectedLanguage(detectLanguage)
     } catch (error) {
-      console.log("there was an error fetching the language", error);
+      console.log(error);
     }
   };
 
