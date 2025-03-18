@@ -1,4 +1,5 @@
 import { useChatContext } from "../Context/ChatContext";
+// import { translate } from "./Translate";
 
 const Message = () => {
   const { messages, targetLanguage, translate, setTargetLanguage } =
@@ -30,7 +31,7 @@ const Message = () => {
           {message.type === "user" && (
             <button
               className="cursor-pointer !mx-2 bg-green-600 !p-2 rounded text-xs"
-              onClick={() => translate(message.text)}
+              onClick={()=> translate()}
             >
               Translate
             </button>
@@ -44,7 +45,9 @@ const Message = () => {
             }`}
           >
             {message.text}
-            {message.language}
+            {message.type === "bot" && (
+              <small className="block">{message.possibleLanguage}</small>
+            )}
           </div>
         </div>
       ))}
