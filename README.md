@@ -1,8 +1,30 @@
-# React + Vite
+# 📘 LinguaFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**LinguaFlow** is a lightweight, AI-powered text processing app built with **React + Vite**. It currently supports **language detection** and **translation**, with upcoming support for **text generation using Hugging Face**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
+
+- 🌍 **Language Detection** — Identify the language of any input string.
+- 🔄 **Translation** — Translate text between various languages via a free API.
+- 🧠 **(Coming Soon)**: Text generation with Hugging Face models (e.g., summarization, rewriting).
+
+---
+
+## ⚙️ Tech Stack
+
+- **Frontend:** React + Vite  
+- **Styling:** Tailwind CSS  
+- **APIs:** LibreTranslate / OpenTranslate (now), Hugging Face (soon)  
+- **Tooling:** ESLint, Prettier
+
+---
+
+## 🧑‍💻 Setup & Installation
+
+```bash
+git clone https://github.com/yourusername/linguaflow.git
+cd linguaflow
+npm install
+npm run dev
