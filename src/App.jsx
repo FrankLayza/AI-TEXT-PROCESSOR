@@ -1,18 +1,14 @@
-import Input from "./Components/Input";
-import Message from "./Components/Message";
-import {ChatProvider} from './Context/ChatContext';
+import OutputBox from "./components/OutputBox";
+import { MessageProvider } from "./context/MessageContext";
+// import TextInput from "./components/TextInput";
 
 const App = () => {
   return (
-    <ChatProvider>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="w-[70%] !p-2 rounded-2xl bg-[#ececec] shadow-lg">
-          <h2 className="font-bold mb-4 text-2xl text-center">AI Text Processor</h2>
-          <Message />
-          <Input />
-        </div>
+    <MessageProvider>
+      <div className="w-full min-h-screen bg-gradient-to-r from-[#ddd0d9] via-[#d1d1ea] to-[#dedff1] p-0 m-0">
+        <OutputBox />
       </div>
-    </ChatProvider>
+    </MessageProvider>
   );
 };
 
